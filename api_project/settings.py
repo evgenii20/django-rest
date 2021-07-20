@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s4x)w96(ry#db#)wqi+0@m*e#%e=s#1)yc6@x^e(97b2ia^m=x'
+SECRET_KEY = 'django-insecure-4=fa6bksstpw@5lhytjj!n^bfg4eq4a@oq78%p1q3x^_qe+=b&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'users'
+    'userapp'
 ]
 
 MIDDLEWARE = [
@@ -110,6 +110,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+"""https://stackoverflow.com/questions/49189402/auth-user-groups-fields-e304-reverse-accessor-for-user-groups-clashes-with"""
+AUTH_USER_MODEL = 'userapp.APIUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

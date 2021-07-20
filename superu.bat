@@ -1,2 +1,2 @@
-python manage.py createsuperuser --username django --email django@geekshop.local
+python manage.py createsuperuser --username gbdjango --email django@geekshop.local
 pause

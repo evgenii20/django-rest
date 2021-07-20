@@ -25,6 +25,6 @@ class Command(BaseCommand):
             if admin:
                 # User.objects.create_superuser(username=username, email='', password='123')
                 User.objects.create_superuser(username='gbdjango', email='', password='gbdjango')
-                self.stdout.write(f'Суперпользователь создан успешно!')
+                self.stdout.write(f'Суперпользователь {User.username} создан успешно!')
             else:
                 User.objects.create_user(username=username, email='', password='123')
