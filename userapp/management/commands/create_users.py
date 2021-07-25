@@ -1,4 +1,6 @@
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+
+from userapp.models import APIUser
 from django.core.management.base import BaseCommand
 from django.utils.crypto import get_random_string
 
@@ -24,7 +26,8 @@ class Command(BaseCommand):
 
             if admin:
                 # User.objects.create_superuser(username=username, email='', password='123')
-                User.objects.create_superuser(username='gbdjango', email='', password='gbdjango')
-                self.stdout.write(f'Суперпользователь {User.username} создан успешно!')
+                APIUser.objects.create_superuser(username='gbdjango', email='', password='gbdjango')
+                self.stdout.write(f'Суперпользователь {APIUser.username} создан успешно!')
             else:
-                User.objects.create_user(username=username, email='', password='123')
+                # User.objects.create_user(username=username, email='', password='123')
+                APIUser.objects.create_user(username=username, email='', password='123')

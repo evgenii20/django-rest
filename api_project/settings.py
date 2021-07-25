@@ -26,6 +26,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# добавляем адреса, с которых будет возможен запрос. Теперь сервер будет отвечать
+# на запросы с http://localhost:3000, на котором располагается тестовый front-end сервер.
+CORS_ALLOWED_ORIGINS = [
+   "http://localhost:3000",
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,12 +43,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'userapp'
+    'userapp',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
