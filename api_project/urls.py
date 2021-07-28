@@ -18,13 +18,17 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 from userapp.views import APIUserModelViewSet
+from todoapp.views import ProjectModelViewSet, TodoModelViewSet
 
 # Для автомтической генерации URL
 router = DefaultRouter()
 
 # Добавляем точку входа
 # router.register('users', UserModelViewSet)
-router.register('userapp', APIUserModelViewSet)
+router.register('users', APIUserModelViewSet)
+router.register('projects', ProjectModelViewSet)
+router.register('todo', TodoModelViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

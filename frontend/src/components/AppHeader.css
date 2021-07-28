@@ -1,0 +1,10 @@
+.menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: space-around;
+    justify-content: space-evenly;
+}
+.items {
+    padding: 5px;
+}
