@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'userapp',
     'corsheaders',
-    'todoapp'
+    'todoapp',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'api_project.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer'
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
+    'PAGE_SIZE': 100
+}
 
 TEMPLATES = [
     {
@@ -134,4 +146,3 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
