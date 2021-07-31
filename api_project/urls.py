@@ -32,12 +32,13 @@ router = DefaultRouter()
 # Добавляем точку входа
 router.register('users', APIUserView, basename='users')
 # router.register('users', APIUserModelViewSet)
-router.register('projects', ProjectModelViewSet)
+router.register('projects', ProjectModelViewSet, basename='projects')
 # поиск по параметрам
 # router.register('param', ArticleParamFilterViewSet)
 # router.register('filters', ProjectModelViewSet, basename='filters')
 # router.register('projects', ProjectModelViewSet.as_view(), basename='projects')
-router.register('todo', TodoModelViewSet)
+# router.register('todo', TodoModelViewSet)
+router.register('todo', TodoModelViewSet, basename='todo')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

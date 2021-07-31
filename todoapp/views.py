@@ -30,15 +30,17 @@ from .serializers import ProjectModelSerializer, TodoModelSerializer
 # filterset_fields = ProjectFilter
 
 class ProjectLimitOffsetPagination(LimitOffsetPagination):
-    default_limit = 2
+    """Вывод на экран по 10 проектов"""
+    default_limit = 10
 
 
 class TodoLimitOffsetPagination(LimitOffsetPagination):
-    default_limit = 3
+    """Вывод на экран по 20 заметок"""
+    default_limit = 20
 
 
 class ProjectModelViewSet(ModelViewSet):
-    queryset = Project.objects.all()
+    # queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
     # filter_backends = [filters.OrderingFilter]
     pagination_class = ProjectLimitOffsetPagination
@@ -48,8 +50,10 @@ class ProjectModelViewSet(ModelViewSet):
 
     # @action(methods=['GET'], detail=True)
     def get_queryset(self):
-        # name = self.request.query_params.get('name', None)
-        name = self.request.query_params.get(ProjectFilter, None)
+        """http://127.0.0.1:8000/api/projects/?name=%D0%BA%D1%823
+        поиск по части слова"""
+        name = self.request.query_params.get('name', None)
+        # name = self.request.query_params.get(ProjectFilter, None)
         # articles = Article.objects.all()
         projects = Project.objects.all()
         if name:
@@ -71,16 +75,18 @@ class TodoModelViewSet(ModelViewSet):
 
     # filterset_fields = TodoFilter
 
-    # @action(methods=['GET'], detail=True)
     # def get_queryset(self):
-    #     # name = self.request.query_params.get('name', '')
-    #     project = self.request.query_params.get(TodoFilter, None)
+    #     """http://127.0.0.1:8000/api/todo/?todo_project=%D0%BA%D1%823
+    #     поиск по проекту"""
+    #     todo_project = self.request.query_params.get('project', None)
+    #     # name = self.request.query_params.get(ProjectFilter, None)
     #     # articles = Article.objects.all()
     #     todos = Todo.objects.all()
-    #     if todos:
+    #     if todo_project:
     #         # projects = projects.filter(name__contains=name)
-    #         return todos.filter(name__contains=project)
+    #         return todos.filter(project__contains=todo_project)
     #     return todos
+
     def destroy(self, request, *args, **kwargs):
         todo = Todo.objects.get(id=kwargs.get('pk'))
         todo.is_active = 'False'
