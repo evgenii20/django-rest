@@ -16,22 +16,37 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from rest_framework.routers import DefaultRouter
-from userapp.views import APIUserModelViewSet
+from rest_framework.routers import DefaultRouter, SimpleRouter
+# from userapp.views import APIUserModelViewSet
 from todoapp.views import ProjectModelViewSet, TodoModelViewSet
 
 # Для автомтической генерации URL
+from userapp.views import APIUserView
+from todoapp.filters import ProjectListAPIView
+
+# from todoapp.views import ProjectCustomFilterViewSet
+
 router = DefaultRouter()
+# router = SimpleRouter()
 
 # Добавляем точку входа
-# router.register('users', UserModelViewSet)
-router.register('users', APIUserModelViewSet)
-router.register('projects', ProjectModelViewSet)
-router.register('todo', TodoModelViewSet)
-
+router.register('users', APIUserView, basename='users')
+# router.register('users', APIUserModelViewSet)
+router.register('projects', ProjectModelViewSet, basename='projects')
+# поиск по параметрам
+# router.register('param', ArticleParamFilterViewSet)
+# router.register('filters', ProjectModelViewSet, basename='filters')
+# router.register('projects', ProjectModelViewSet.as_view(), basename='projects')
+# router.register('todo', TodoModelViewSet)
+router.register('todo', TodoModelViewSet, basename='todo')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
+    # path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    # path('api/filters/', include(router.urls))
+    path('api/filters/kwargs/<str:name>/', ProjectListAPIView.as_view())
+    # path('api/users/<int:pk>/', APIUserRetrieveAPIView.as_view()),
+    # path('api/users/<int:pk>/', APIUserDestroyAPIView.as_view()),
+
 ]
