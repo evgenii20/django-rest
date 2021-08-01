@@ -23,7 +23,8 @@ class Todo(models.Model):
     text = models.TextField(max_length=150, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
-    users = models.OneToOneField(APIUser, on_delete=models.CASCADE)
+    # users = models.OneToOneField(APIUser, on_delete=models.CASCADE)
+    users = models.ManyToManyField(APIUser)
     create_date = models.DateTimeField(auto_now_add=True)  # дата создания
     update_date = models.DateTimeField(auto_now_add=True)  # дата обновления
 

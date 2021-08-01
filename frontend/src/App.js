@@ -5,9 +5,22 @@ import APIUserList from './components/APIUser.js';
 import axios from 'axios'
 import HeaderMenu from "./components/AppHeader";
 import Footer from "./components/AppFooter";
+import ProjectList from "./components/Project";
+import TodoList from "./components/Todo";
+import UserProject from "./components/UserProject";
+import NotFound404 from "./components/NotFound404"
+// import TodoProject from "./components/TodoProject";
+import {HashRouter, Route, Link, Switch, Redirect, BrowserRouter} from "react-router-dom";
 
 // import APIUser from "./components/APIUser";
 
+// const NotFound404 = ({location}) => {
+//     return (
+//         <div>
+//             <h1>Страница по адресу '{location.pathname}' не найдена</h1>
+//         </div>
+//     )
+// }
 
 class App extends React.Component {
     constructor(props) {
@@ -15,22 +28,47 @@ class App extends React.Component {
         this.state = {
             //'authors': []
             // 'userapp': []
-            'users': []
+            'users': [],
+            'projects': [],
+            'todo': []
         }
     }
+
     //вызывается при монтировании компонента на страницу
     componentDidMount() {
         //асинхронный запрос
-        axios.get('http://127.0.0.1:8000/api/userapp/')
+        axios.get('http://127.0.0.1:8000/api/users/')
             //если успешно, то ".then"
-       .then(response => {
-           const users = response.data
-               this.setState(
-               {
-                   'users': users
-               }
-           )
-       }).catch(error => console.log(error))
+            .then(response => {
+                const users = response.data
+                this.setState(
+                    {
+                        'users': users
+                    }
+                )
+            }).catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:8000/api/projects/')
+            //если успешно, то ".then"
+            .then(response => {
+                const projects = response.data
+                this.setState(
+                    {
+                        'projects': projects
+                    }
+                )
+            }).catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:8000/api/todo/')
+            //если успешно, то ".then"
+            .then(response => {
+                const todo = response.data
+                this.setState(
+                    {
+                        'todo': todo
+                    }
+                )
+            }).catch(error => console.log(error))
         // const authors = [
         // const users = [
         //     {
@@ -55,12 +93,27 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
-                <HeaderMenu />
-                <hr/>
-                <APIUserList users={this.state.users}/>
-                <hr/>
-                <Footer />
+            <div className="App">
+                {/*<HashRouter>*/}
+                <BrowserRouter>
+                    <HeaderMenu/>
+                    <hr/>
+                    <Switch>
+                        <Route exact path='/' component={() => <APIUserList users={this.state.users}/>}/>
+                        <Route exact path='/projects' component={() => <ProjectList projects={this.state.projects}
+                                                                                    users={this.state.users}/>}/>
+                        <Route exact path='/users/:id' component={() => <UserProject projects={this.state.projects}
+                                                                                     users={this.state.users}/>}/>
+                        {/*<Route exact path='/todo/:id' component={() => <TodoProject todos={this.state.todo}*/}
+                        {/*                                                            projects={this.state.projects}/>}/>*/}
+                        <Route exact path='/todo' component={() => <TodoList todos={this.state.todo}/>}/>
+                        <Redirect from='/users' to='/'/>
+                        <Route component={NotFound404}/>
+                    </Switch>
+                    <hr/>
+                    <Footer/>
+                    {/*</HashRouter>*/}
+                </BrowserRouter>
             </div>
         )
     }

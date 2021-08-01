@@ -1,4 +1,6 @@
+from rest_framework.generics import ListAPIView
 from rest_framework.serializers import ModelSerializer
+from rest_framework.viewsets import ModelViewSet
 
 from todoapp.models import Project, Todo
 from userapp.models import APIUser
@@ -23,13 +25,13 @@ class ProjectModelSerializer(ModelSerializer):
     class Meta:
         model = Project
         # сериализатор на основании модели Project будет создавать JSON-представление
-        # fields = '__all__'
-        fields = ('name', 'text', 'users')
+        fields = '__all__'
+        # fields = ('name', 'text', 'users')
 
 
 class TodoModelSerializer(ModelSerializer):
     # users = APIUserModelSerializer()
-    # projects = ProjectModelSerializer()
+    # projects = ProjectFilterModelViewSet()
 
     class Meta:
         model = Todo
