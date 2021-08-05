@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.authtoken.views import obtain_auth_token
 
 from rest_framework.routers import DefaultRouter, SimpleRouter
 # from userapp.views import APIUserModelViewSet
@@ -42,8 +43,10 @@ router.register('todo', TodoModelViewSet, basename='todo')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api-auth/', include('rest_framework.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    # получение токена
+    path('api-token-auth/', obtain_auth_token),
     # path('api/filters/', include(router.urls))
     path('api/filters/kwargs/<str:name>/', ProjectListAPIView.as_view())
     # path('api/users/<int:pk>/', APIUserRetrieveAPIView.as_view()),
