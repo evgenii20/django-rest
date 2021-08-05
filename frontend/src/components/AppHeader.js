@@ -1,5 +1,6 @@
 import React from 'react'
-import * as ReactDOM from "react-dom";
+// import * as ReactDOM from "react-dom";
+import {Link} from "react-router-dom";
 
 // import APIUser from "./APIUser";
 
@@ -15,14 +16,14 @@ import * as ReactDOM from "react-dom";
 
 const HeaderMenu = () => {
     return <header>
-        <div>
+        <nav>
             {/*{menu.map((value, index) => {*/}
             {/*    return <div key={index}><a name={value}/></div>*/}
             {/*})}*/}
-            <div><a>GET</a></div>
-            <div><a>POST</a></div>
-            <div><a>PUT</a></div>
-        </div>
+            <ul><li><Link to='/'>Пользователи</Link></li></ul>
+            <ul><li><Link to='/projects'>Проекты</Link></li></ul>
+            <ul><li><Link to='/todo'>Заметки</Link></li></ul>
+        </nav>
     </header>
 }
 
