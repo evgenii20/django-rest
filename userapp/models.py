@@ -22,3 +22,4 @@ class APIUser(AbstractUser):
 # age = models.PositiveSmallIntegerField(verbose_name='возраст', blank=True)
 # email = models.EmailField(verbose_name='email', unique=True)
 # password = models.CharField(max_length=50)
+

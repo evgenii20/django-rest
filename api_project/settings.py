@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'userapp',
     'corsheaders',
     'todoapp',
@@ -73,8 +74,23 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
+    'DEFAULT_PERMISSION_CLASSES': [
+        # все запросы доступны только авторизованным пользователям
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # базовоя — для возможности зайти с логином и паролем;
+        'rest_framework.authentication.BasicAuthentication',
+        # в сессии — для работы внутренней части сайта, стандартной админки и DRF в браузере.
+        # 'rest_framework.authentication.SessionAuthentication',
+        # по токену — для работы на стороне клиента и для удобной и безопасной работы с API;
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+
 }
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDER_CLASSES'].append('rest_framework.permissions.BrowsableAPIRenderer')
 
 TEMPLATES = [
     {
