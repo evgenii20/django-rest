@@ -8,7 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 # from .filters import ProjectListAPIView
 from .filters import ProjectFilter, TodoFilter
 from .models import Project, Todo
-from .serializers import ProjectModelSerializer, TodoModelSerializer
+from .serializers import ProjectModelSerializer, TodoModelSerializer, ProjectModelSerializerBase
 
 
 # Create your views here.
@@ -40,8 +40,9 @@ class TodoLimitOffsetPagination(LimitOffsetPagination):
 
 
 class ProjectModelViewSet(ModelViewSet):
-    # queryset = Project.objects.all()
+    # permission_classes = [permissions.IsAuthenticated]
     serializer_class = ProjectModelSerializer
+    queryset = Project.objects.all()
     # filter_backends = [filters.OrderingFilter]
 
     # Временно отключил для работы с frontom
@@ -63,6 +64,11 @@ class ProjectModelViewSet(ModelViewSet):
             return projects.filter(name__contains=name)
         return projects
 
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return ProjectModelSerializer
+        return ProjectModelSerializerBase
+
 
 # class ProjectCustomFilterViewSet(ModelViewSet):
 #    queryset = Project.objects.all()
@@ -80,7 +86,7 @@ class TodoModelViewSet(ModelViewSet):
     # filterset_fields = TodoFilter
 
     # def get_queryset(self):
-    #     """http://127.0.0.1:8000/api/todo/?todo_project=%D0%BA%D1%823
+    #     """http://127.0.0.1:8000/api/to do/?todo_project=%D0%BA%D1%823
     #     поиск по проекту"""
     #     todo_project = self.request.query_params.get('project', None)
     #     # name = self.request.query_params.get(ProjectFilter, None)

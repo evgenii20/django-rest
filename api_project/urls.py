@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
 from rest_framework.authtoken.views import obtain_auth_token
 
 from rest_framework.routers import DefaultRouter, SimpleRouter
@@ -24,6 +25,8 @@ from todoapp.views import ProjectModelViewSet, TodoModelViewSet
 # Для автомтической генерации URL
 from userapp.views import APIUserView
 from todoapp.filters import ProjectListAPIView
+
+from graphene_django.views import GraphQLView
 
 # from todoapp.views import ProjectCustomFilterViewSet
 
@@ -38,6 +41,7 @@ router.register('projects', ProjectModelViewSet, basename='projects')
 # router.register('param', ArticleParamFilterViewSet)
 # router.register('filters', ProjectModelViewSet, basename='filters')
 # router.register('projects', ProjectModelViewSet.as_view(), basename='projects')
+# router.register('projects', ProjectModelViewSet, basename='projects')
 # router.register('todo', TodoModelViewSet)
 router.register('todo', TodoModelViewSet, basename='todo')
 
@@ -48,8 +52,9 @@ urlpatterns = [
     # получение токена
     path('api-token-auth/', obtain_auth_token),
     # path('api/filters/', include(router.urls))
-    path('api/filters/kwargs/<str:name>/', ProjectListAPIView.as_view())
+    path('api/filters/kwargs/<str:name>/', ProjectListAPIView.as_view()),
     # path('api/users/<int:pk>/', APIUserRetrieveAPIView.as_view()),
     # path('api/users/<int:pk>/', APIUserDestroyAPIView.as_view()),
+    path('graphql/', GraphQLView.as_view(graphiql=True))
 
 ]
