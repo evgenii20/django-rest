@@ -42,12 +42,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # до 10-го урока
+    # 'graphene_django',
+
     'rest_framework',
     'rest_framework.authtoken',
     'userapp',
     'corsheaders',
     'todoapp',
     'django_filters'
+
 ]
 
 MIDDLEWARE = [
@@ -74,10 +78,12 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100,
+    # 'PAGE_SIZE': 100,
     'DEFAULT_PERMISSION_CLASSES': [
         # все запросы доступны только авторизованным пользователям
         'rest_framework.permissions.IsAuthenticated',
+        # включим временно для тестов IsAuthenticatedOrReadOnly
+        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # базовоя — для возможности зайти с логином и паролем;
@@ -91,6 +97,11 @@ REST_FRAMEWORK = {
 }
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDER_CLASSES'].append('rest_framework.permissions.BrowsableAPIRenderer')
+
+# до 10-го урока
+# GRAPHENE = {
+#     "SCHEMA": "userapp.schema.schema"
+# }
 
 TEMPLATES = [
     {
