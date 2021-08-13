@@ -6,10 +6,12 @@
     justify-content: space-evenly;
 
 }
+
 .items {
     padding: 5px;
 }
 
-.list-group-item {
-    list-style: none;
+.list-style {
+    /*list-style: none;*/
+    list-style-type: none;
 }
