@@ -18,9 +18,23 @@ class APIUserModelSerializer(ModelSerializer):
         # fields = ['text', 'author']
 
 
+class ProjectModelSerializerBase(ModelSerializer):
+    # users = APIUserModelSerializer(APIUser, many=True)
+    # users = APIUserModelSerializer(APIUser, many=True)
+
+    class Meta:
+        model = Project
+        # сериализатор на основании модели Project будет создавать JSON-представление
+        fields = '__all__'
+        # fields = ('name', 'text', 'users')
+
+
 class ProjectModelSerializer(ModelSerializer):
+    """user = AuthorSerializer()Это удобно при выводе данных, так как данные автора будут
+    представлены словарём, а не его id, но это неудобно при сохранении данных.
+    Поэтому ProjectSerializerBase будет для сохранения данных, а ProjectSerializer — для вывода данных."""
     # users = APIUserModelSerializer(APIUser, many=True)
-    # users = APIUserModelSerializer(APIUser, many=True)
+    users = APIUserModelSerializer(many=True)
 
     class Meta:
         model = Project

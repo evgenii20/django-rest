@@ -13,3 +13,10 @@ class APIUserModelSerializer(ModelSerializer):
         # http://127.0.0.1:8000/api/userapp/
         # fields = ('user_name', 'first_name', 'last_name', 'email')
 
+
+# создание сериализатора v2
+class APIUserModelSerializerV2(ModelSerializer):
+    class Meta:
+        model = APIUser
+        # fields = ['first_name', 'last_name']
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_superuser', 'is_staff')

@@ -42,12 +42,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # до 10-го урока
+    # 'graphene_django',
+
     'rest_framework',
     'rest_framework.authtoken',
     'userapp',
     'corsheaders',
     'todoapp',
-    'django_filters'
+    'django_filters',
+    'drf_yasg'
+
 ]
 
 MIDDLEWARE = [
@@ -65,6 +70,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'api_project.urls'
 
+# http://127.0.0.1:8000/api/users/1/
+# http://127.0.0.1:8000/api/2.0/users/1/
+
 REST_FRAMEWORK = {
     'DEFAULT_RENDER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -74,10 +82,12 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100,
+    # 'PAGE_SIZE': 100,
     'DEFAULT_PERMISSION_CLASSES': [
         # все запросы доступны только авторизованным пользователям
-        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
+        # включим временно для тестов IsAuthenticatedOrReadOnly
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # базовоя — для возможности зайти с логином и паролем;
@@ -86,11 +96,28 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         # по токену — для работы на стороне клиента и для удобной и безопасной работы с API;
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+
+    # При использовании UrlPathVersioning мы можем передать номер версии в URL-адресе
+    # для 'DEFAULT_VERSIONING_CLASS' не использовать словарь настроек, проблемы с парсингом
+    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+    # HostNameVersioning - позволяет указать версию в имени хоста, например "http://v1.example.com/bookings/", исп. на боевом сервере
+    # QueryParameterVersioning - позволяет указывать версии в качестве его параметра, например:
+    # http://127.0.0.1:8000/api/users/?version=v2
+    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning',
+    # Указание версии в заголовках запроса - AcceptHeaderVersioning
+    # http://127.0.0.1:8000/api/users/
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning'
 
 }
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDER_CLASSES'].append('rest_framework.permissions.BrowsableAPIRenderer')
+
+# до 10-го урока
+# GRAPHENE = {
+#     "SCHEMA": "userapp.schema.schema"
+# }
 
 TEMPLATES = [
     {
@@ -163,3 +190,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SWAGGER_SETTINGS = {
+#    'DEFAULT_INFO': 'import.path.to.urls.api_info',
+# }

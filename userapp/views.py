@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
-from rest_framework.mixins import RetrieveModelMixin, ListModelMixin, UpdateModelMixin
+from rest_framework.mixins import RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ViewSet, GenericViewSet
 from .models import APIUser
-from .serializers import APIUserModelSerializer
+from .serializers import APIUserModelSerializer, APIUserModelSerializerV2
 # from .serializers import APIUserSerializer
 
 
@@ -47,16 +47,31 @@ from .serializers import APIUserModelSerializer
 
 #                   извлекать         выводит список   удаляет один объект
 # class APIUserView(RetrieveModelMixin, ListModelMixin, DestroyModelMixin, GenericViewSet):
-class APIUserView(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
+class APIUserView(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet, CreateModelMixin):
     # Мы используем наследование от ModelViewSet. Это означает, что набор views связан с
     # моделью и будет работать с её данными.
     # serializer_class определяет тот Serializer, который мы будем использовать.
     # viewset определяет, какие данные будут вводиться, а serializer назначает их представление в JSON.
     # renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     # renderer_classes = [JSONRenderer]
-    serializer_class = APIUserModelSerializer
+
+    # при версионировании в get_serializer_class "serializer_class" - комментируем
+    # serializer_class = APIUserModelSerializer
     # queryset указывает, какие данные мы будем выводить в списке.
     queryset = APIUser.objects.all()
+
+    # создание сериализатора v2
+    def get_serializer_class(self):
+        # if self.request.version == 'v2':
+        # if self.request.version == '2.0':
+        if self.request.version == 'v2':
+            return APIUserModelSerializerV2
+        return APIUserModelSerializer
+
+    # def get_serializer_class(self):
+    #     if self.request.method in ['GET']:
+    #         return BookSerializer
+    #     return BookSerializerBase
 
 # class APIUserView(ViewSet):
 #     # Использование произвольных команд

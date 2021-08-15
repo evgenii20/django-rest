@@ -1,6 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+// import './css/bootstrap.min.css';
+// import './css/sticky-footer-navbar.css';
+import './components/AppHeader.css';
 import APIUserList from './components/APIUser.js';
 import axios from 'axios'
 import HeaderMenu from "./components/AppHeader";
@@ -54,7 +57,8 @@ class App extends React.Component {
 
     get_headers() {
         let header = {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Accept' : 'application/json; version=v2'
         }
         const cookie = new Cookies()
         // cookies.set('token', response.data.token)
@@ -188,7 +192,7 @@ class App extends React.Component {
                             <li><Link to='/'>Пользователи</Link></li>
                             <li><Link to='/projects'>Проекты</Link></li>
                             <li><Link to='/todo'>Заметки</Link></li>
-                            <li><Link to='/login'>Вход</Link></li>
+                            {/*<li><Link to='/login'>Вход</Link></li>*/}
                             <li>
                                 {this.is_authenticated() ? <button onClick={() => this.logout()}>Выход</button> :
                                     <Link to='/login'>Вход</Link>}
