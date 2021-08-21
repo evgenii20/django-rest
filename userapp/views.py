@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ViewSet, GenericViewSet
 from .models import APIUser
-from .serializers import APIUserModelSerializer
+from .serializers import APIUserModelSerializer, APIUserModelSerializerV2
 # from .serializers import APIUserSerializer
 
 
@@ -54,9 +54,24 @@ class APIUserView(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
     # viewset определяет, какие данные будут вводиться, а serializer назначает их представление в JSON.
     # renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     # renderer_classes = [JSONRenderer]
-    serializer_class = APIUserModelSerializer
+
+    # при версионировании в get_serializer_class "serializer_class" - комментируем
+    # serializer_class = APIUserModelSerializer
     # queryset указывает, какие данные мы будем выводить в списке.
     queryset = APIUser.objects.all()
+
+    # создание сериализатора v2
+    def get_serializer_class(self):
+        # if self.request.version == 'v2':
+        # if self.request.version == '2.0':
+        if self.request.version == 'v2':
+            return APIUserModelSerializerV2
+        return APIUserModelSerializer
+
+    # def get_serializer_class(self):
+    #     if self.request.method in ['GET']:
+    #         return BookSerializer
+    #     return BookSerializerBase
 
 # class APIUserView(ViewSet):
 #     # Использование произвольных команд

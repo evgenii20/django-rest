@@ -24,19 +24,11 @@ const HeaderMenu = () => {
                 <li><Link to='/'>Пользователи</Link></li>
                 <li><Link to='/projects'>Проекты</Link></li>
                 <li><Link to='/todo'>Заметки</Link></li>
-<<<<<<< lesson_8
                 {/*<li><Link to='/login'>Вход</Link></li>*/}
                 <li>
                     {this.is_authenticated() ? <button onClick={() => this.logout()}>Выход</button> :
                         <Link to='/login'>Вход</Link>}
                 </li>
-=======
-                <li><Link to='/login'>Вход</Link></li>
-                {/*<li>*/}
-                {/*    {this.is_authenticated() ? <button onClick={() => this.logout()}>Выход</button> :*/}
-                {/*        <Link to='/login'>Вход</Link>}*/}
-                {/*</li>*/}
->>>>>>> lesson_7_hw
                 <li>
                     <button onClick={() => this.logout()}>Выход</button>
                 </li>
