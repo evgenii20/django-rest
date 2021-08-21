@@ -16,6 +16,8 @@ import NotFound404 from "./components/NotFound404"
 import {HashRouter, Route, Link, Switch, Redirect, BrowserRouter} from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import Cookies from 'universal-cookie';
+// import './bootstrap/css/bootstrap.min.css'
+// import './bootstrap/css/sticky-footer-navbar.css'
 
 // import APIUser from "./components/APIUser";
 

@@ -42,16 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # до 10-го урока
-    # 'graphene_django',
-
     'rest_framework',
     'rest_framework.authtoken',
     'userapp',
     'corsheaders',
     'todoapp',
     'django_filters',
-    'drf_yasg'
+    'drf_yasg',
+    'graphene_django'
 
 ]
 
@@ -115,9 +113,9 @@ if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDER_CLASSES'].append('rest_framework.permissions.BrowsableAPIRenderer')
 
 # до 10-го урока
-# GRAPHENE = {
-#     "SCHEMA": "userapp.schema.schema"
-# }
+GRAPHENE = {
+    "SCHEMA": "userapp.schema.schema"
+}
 
 TEMPLATES = [
     {
@@ -191,6 +189,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SWAGGER_SETTINGS = {
-#    'DEFAULT_INFO': 'import.path.to.urls.api_info',
-# }
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'import.path.to.urls.api_info',
+    # 'DEFAULT_GENERATOR_CLASS': 'drf_yasg.generators.OpenAPISchemaGenerator',
+}
