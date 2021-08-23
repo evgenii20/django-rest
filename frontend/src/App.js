@@ -16,6 +16,12 @@ import NotFound404 from "./components/NotFound404"
 import {HashRouter, Route, Link, Switch, Redirect, BrowserRouter} from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import Cookies from 'universal-cookie';
+import './bootstrap/css/bootstrap.min.css'
+import APIUserProjectList from "./components/UserProject";
+import ProjectForm from "./components/ProjectForm";
+import TodoForm from "./components/TodoForm";
+
+// import './bootstrap/css/sticky-footer-navbar.css'
 
 // import APIUser from "./components/APIUser";
 
@@ -58,7 +64,7 @@ class App extends React.Component {
     get_headers() {
         let header = {
             'Content-type': 'application/json',
-            'Accept' : 'application/json; version=v2'
+            // 'Accept': 'application/json; version=v2'
         }
         const cookie = new Cookies()
         // cookies.set('token', response.data.token)
@@ -177,48 +183,182 @@ class App extends React.Component {
 
     }
 
+    deleteProject(id) {
+        //обратный вызов
+        console.log('delete', +id)
+
+        const headers = this.get_headers()
+        // console.log(headers)
+
+        //асинхронный запрос
+        axios.delete(`http://127.0.0.1:8000/api/projects/${id}/`, {headers})
+            //если успешно, то ".then"
+            .then(response => {
+                // const users = response.data
+                //1-й подход удаляет только на клиенте
+                // this.setState({
+                //     'projects': this.state.projects.filter((project) => project.id !== id)
+                // })
+                //2-й подход, удаляет с клиента и обновляет изменённые данные с сервера
+                this.get_data()
+            }).catch(error => {
+            // при получении ошибки сбрасываем состояние
+            console.log(error)
+        })
+    }
+
+    deleteTodo(id) {
+        //обратный вызов
+        console.log('delete', +id)
+
+        const headers = this.get_headers()
+        // console.log(headers)
+
+        //асинхронный запрос
+        axios.delete(`http://127.0.0.1:8000/api/todo/${id}/`, {headers})
+            //если успешно, то ".then"
+            .then(response => {
+                // const users = response.data
+                //1-й подход
+                this.setState({
+                    'todo': this.state.todo.filter((todos) => todos.id !== id)
+                })
+                //2-й подход
+                // this.get_data()
+            }).catch(error => {
+            // при получении ошибки сбрасываем состояние
+            console.log(error)
+        })
+    }
+
+    createProject(name, text, users) {
+
+
+        if (!name || users.length == 0) {
+            console.log("Empty params:", name, users)
+            return;
+        }
+
+        const headers = this.get_headers()
+        const data = {name: name, text: text, users: users}
+        console.log(data)
+        //отрисовываем на странице требуемые поля
+        axios.post('http://127.0.0.1:8000/api/projects/',
+            {
+                "name": name,
+                "text": text,
+                "users": users
+            },
+            {headers})
+            .then(
+                response => {
+                    this.get_data()
+                }
+            ).catch(
+            error => {
+                console.log(error)
+            }
+        )
+    }
+
+    // createTodo(todo, text, users) {
+    //
+    //
+    //     if (!todo || users.length == 0) {
+    //         console.log("Empty params:", todo, users)
+    //         return;
+    //     }
+    //
+    //     const headers = this.get_headers()
+    //     const data = {todo: todo, text: text, users: users}
+    //     console.log(data)
+    //     //отрисовываем на странице требуемые поля
+    //     axios.post('http://127.0.0.1:8000/api/todo/',
+    //         {
+    //             "todo": todo,
+    //             "text": text,
+    //             "users": users
+    //         },
+    //         {headers})
+    //         .then(
+    //             response => {
+    //                 this.get_data()
+    //             }
+    //         ).catch(
+    //         error => {
+    //             console.log(error)
+    //         }
+    //     )
+    // }
 
     render() {
         return (
             <div className="App">
                 {/*<HashRouter>*/}
                 <BrowserRouter>
-                    {/*<HeaderMenu/>*/}
-                    <nav>
-                        {/*{menu.map((value, index) => {*/}
-                        {/*    return <div key={index}><a name={value}/></div>*/}
-                        {/*})}*/}
-                        <ul className="list-style">
-                            <li><Link to='/'>Пользователи</Link></li>
-                            <li><Link to='/projects'>Проекты</Link></li>
-                            <li><Link to='/todo'>Заметки</Link></li>
-                            {/*<li><Link to='/login'>Вход</Link></li>*/}
-                            <li>
-                                {this.is_authenticated() ? <button onClick={() => this.logout()}>Выход</button> :
-                                    <Link to='/login'>Вход</Link>}
-                            </li>
-                            {/*<li>*/}
-                            {/*    <button onClick={() => this.logout()}>Выход</button>*/}
-                            {/*</li>*/}
-                        </ul>
-                    </nav>
-                    <hr/>
-                    <Switch>
-                        <Route exact path='/' component={() => <APIUserList users={this.state.users}/>}/>
-                        <Route exact path='/projects' component={() => <ProjectList projects={this.state.projects}
-                                                                                    users={this.state.users}/>}/>
-                        <Route exact path='/users/:id' component={() => <UserProject projects={this.state.projects}
-                                                                                     users={this.state.users}/>}/>
-                        {/*<Route exact path='/todo/:id' component={() => <TodoProject todos={this.state.todo}*/}
-                        {/*                                                            projects={this.state.projects}/>}/>*/}
-                        <Route exact path='/todo' component={() => <TodoList todos={this.state.todo}/>}/>
-                        <Route exact path='/login' component={() => <LoginForm
-                            get_token={(login, password) => this.get_token(login, password)}/>}/>
-                        <Redirect from='/users' to='/'/>
-                        <Route component={NotFound404}/>
-                    </Switch>
-                    <hr/>
-                    <Footer/>
+                    <HeaderMenu/>
+                    {/*<nav>*/}
+                    {/*    /!*{menu.map((value, index) => {*!/*/}
+                    {/*    /!*    return <div key={index}><a name={value}/></div>*!/*/}
+                    {/*    /!*})}*!/*/}
+                    {/*    <ul className="list-style">*/}
+                    {/*        <li><Link to='/'>Пользователи</Link></li>*/}
+                    {/*        <li><Link to='/projects'>Проекты</Link></li>*/}
+                    {/*        <li><Link to='/todo'>Заметки</Link></li>*/}
+                    {/*        /!*<li><Link to='/login'>Вход</Link></li>*!/*/}
+                    {/*        <li>*/}
+                    {/*            {this.is_authenticated() ? <button onClick={() => this.logout()}>Выход</button> :*/}
+                    {/*                <Link to='/login'>Вход</Link>}*/}
+                    {/*        </li>*/}
+                    {/*        /!*<li>*!/*/}
+                    {/*        /!*    <button onClick={() => this.logout()}>Выход</button>*!/*/}
+                    {/*        /!*</li>*!/*/}
+                    {/*    </ul>*/}
+                    {/*</nav>*/}
+                    <main role="main" className="flex-shrink-0">
+                        <div className="container">
+                            <hr/>
+                            <Switch>
+                                <Route exact path='/' component={() => <APIUserList users={this.state.users}/>}/>
+                                <Route exact path='/users/:id'
+                                       component={() => <APIUserProjectList
+                                           projects={this.state.projects}
+                                           users={this.state.users}
+                                           // deleteProject={(id) => this.deleteProject(id)}
+                                       />}/>
+                                {/*вызываем лок. функцию в виде callback deleteProject*/}
+                                <Route exact path='/projects'
+                                       component={() => <ProjectList
+                                           projects={this.state.projects}
+                                           users={this.state.users}
+                                           deleteProject={(id) => this.deleteProject(id)}
+                                       />}/>
+                                <Route exact path='/projects/create'
+                                       component={() => <ProjectForm
+                                           users={this.state.users}
+                                           createProject={(name, text, users) => this.createProject(name,text, users)}
+                                       />}/>
+                                {/*<Route exact path='/todo/:id' component={() => <TodoProject todos={this.state.todo}*/}
+                                {/*                                                            projects={this.state.projects}/>}/>*/}
+                                <Route exact path='/todo' component={() => <TodoList
+                                    todos={this.state.todo}
+                                    users={this.state.users}
+                                    deleteTodo={(id) => this.deleteTodo(id)}
+                                />}/>
+                                {/*<Route exact path='/todo/create'*/}
+                                {/*       component={() => <TodoForm*/}
+                                {/*           users={this.state.users}*/}
+                                {/*           createTodo={(todo, text, users) => this.createTodo(todo,text, users)}*/}
+                                {/*       />}/>*/}
+                                <Route exact path='/login' component={() => <LoginForm
+                                    get_token={(login, password) => this.get_token(login, password)}/>}/>
+                                <Redirect from='/users' to='/'/>
+                                <Route component={NotFound404}/>
+                            </Switch>
+                            <hr/>
+                            <Footer/>
+                        </div>
+                    </main>
                     {/*</HashRouter>*/}
                 </BrowserRouter>
             </div>

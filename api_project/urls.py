@@ -13,9 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include, re_path
+# настраиваем исключение для graphQL, можно исключать
+from django.views.decorators.csrf import csrf_exempt
+
 # from rest_framework import permissions
+# После "..\frontend>npm run build" "TemplateView":
+from django.views.generic import TemplateView
 from rest_framework.permissions import AllowAny
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -29,7 +35,6 @@ from todoapp.views import ProjectModelViewSet, TodoModelViewSet
 # Для автомтической генерации URL
 from userapp.views import APIUserView
 from todoapp.filters import ProjectListAPIView
-
 
 from graphene_django.views import GraphQLView
 
@@ -49,6 +54,7 @@ router.register('projects', ProjectModelViewSet, basename='projects')
 # router.register('projects', ProjectModelViewSet, basename='projects')
 # router.register('todo', TodoModelViewSet)
 router.register('todo', TodoModelViewSet, basename='todo')
+# url(r'^swagger/', schema_view),
 
 # "Access-Control-Allow-Origin:*"
 # permission_classes - позволяет задать права на документацию
@@ -66,6 +72,7 @@ schema_view = get_schema_view(
     permission_classes=(AllowAny,)
 )
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
@@ -76,11 +83,10 @@ urlpatterns = [
     path('api/filters/kwargs/<str:name>/', ProjectListAPIView.as_view()),
     # path('api/users/<int:pk>/', APIUserRetrieveAPIView.as_view()),
     # path('api/users/<int:pk>/', APIUserDestroyAPIView.as_view()),
-    path('graphql/', GraphQLView.as_view(graphiql=True))
 
     # При использовании UrlPathVersioning мы можем передать номер версии в URL-адресе
     # re_path(r'^api/(?P<version>\d\.\d)/users/$', APIUserView.as_view({'get': 'list'})),
-    # re_path(r'^api/(?P<version>(v1|v2))/users/', APIUserView.as_view({'get': 'list'}))
+    # re_path(r'^api/(?P<version>(v1|v2))/users/', APIUserView.as_view({'get': 'list'})),
 
     # NamespaceVersioning
     # path('api/v1/users/', include('userapp.urls', namespace='v1')),
@@ -89,9 +95,14 @@ urlpatterns = [
     # drf-yasg
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    # path('swagger/', schema_view.with_ui('swagger'))
+    # path('swagger/', schema_view.with_ui('swagger')),
+    # path('swagger/', schema_view),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    # path('graphql/', GraphQLView.as_view(graphiql=True))
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
+    # exempt - освобождёный, исключённый. Не проверять "GraphQLView.as_view"
+    # path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=False))),
 
+    # После "..\frontend>npm run build" "TemplateView":
+    path('', TemplateView.as_view(template_name='index.html')),
 ]
