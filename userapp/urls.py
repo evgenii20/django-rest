@@ -7,5 +7,5 @@ urlpatterns = [
     # path('', APIUserView.as_view()),
     # все вьюсеты конструируем в ручную
     path('', APIUserView.as_view({'get': 'list'})),
-    # path('<id>', APIUserView.as_view({'get': 'list'})),
+    # path('<int:id>', APIUserView.as_view({'get': 'list'})),
 ]
