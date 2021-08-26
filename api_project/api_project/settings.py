@@ -123,7 +123,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # После "..\frontend>npm run build" 'DIRS':
         'DIRS': [
-            BASE_DIR / 'frontend/build',
+            BASE_DIR / '../frontend/build',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -144,9 +144,19 @@ WSGI_APPLICATION = 'api_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'apiuser',
+        'USER': 'admin',
+        'PASSWORD': 'qwerty',
+        'HOST': 'db',
+        'PORT': '5435',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '54325',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
 }
 
 # Password validation
@@ -190,7 +200,7 @@ STATIC_URL = '/static/'
 
 # После "..\frontend>npm run build"
 STATICFILES_DIRS = (
-    BASE_DIR / 'frontend/build/static',
+    BASE_DIR / '../frontend/build/static',
 )
 
 # Default primary key field type

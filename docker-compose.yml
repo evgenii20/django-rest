@@ -1,0 +1,51 @@
+version: '3.1'
+
+services:
+  #  поднимаем сервер БД с именем db, в config раздел HOST+-
+  db:
+    #    выбираем образ(image) postgres
+    image: postgres:13.1
+      privileged: true
+      ports:
+        - 5435:5435
+      environment:
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: qwerty
+          POSTGRES_DB: apiuser
+  adminer:
+    image: adminer:4.7.8-standalone
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+  # Контейнер backend будет собираться с помощью Dockerfile, который должен находиться в корне проекта
+  backend:
+    build: ./api_project
+    privileged: true
+    ports:
+      - 8080:8080
+    command:
+      bash -c "
+      ./wait-for-postgres.sh db &&
+      python manage.py migrate &&
+      gunicorn api_project.wsgi -b 0.0.0.0:8080
+      "
+    # && python manage.py create_data
+    # && python manage.py runserver 0.0.0.0:8080
+    depends_on:
+      - db
+    nginx:
+      build: ./nginx
+      ports:
+        - 8000:80
+      # запускать после backend
+      depends_on:
+        - backend
+    # ещё 1-н docker контейнер
+    frontend:
+      build: ./frontend
+      ports:
+        - 80:80
+      depends_on:
+        - nginx
