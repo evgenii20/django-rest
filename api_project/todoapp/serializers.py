@@ -1,21 +1,22 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.serializers import ModelSerializer
 from rest_framework.viewsets import ModelViewSet
+from userapp.serializers import APIUserModelSerializer
 
 from todoapp.models import Project, Todo
-from userapp.models import APIUser
+# from userapp.models import APIUser
 
 
-class APIUserModelSerializer(ModelSerializer):
-    class Meta:
-        model = APIUser
-        fields = '__all__'
-        # сериализатор на основании модели User будет создавать JSON-представление
-        # при объявлении полей - быть внимательнее! иначе не грузится HTML-форма на странице
-        # http://127.0.0.1:8000/api/userapp/
-        # fields = ('user_name', 'first_name', 'last_name', 'email')
-        # fields = ('id', 'first_name', 'last_name', 'email')
-        # fields = ['text', 'author']
+# class APIUserModelSerializer(ModelSerializer):
+#     class Meta:
+#         model = APIUser
+#         fields = '__all__'
+#         # сериализатор на основании модели User будет создавать JSON-представление
+#         # при объявлении полей - быть внимательнее! иначе не грузится HTML-форма на странице
+#         # http://127.0.0.1:8000/api/userapp/
+#         # fields = ('user_name', 'first_name', 'last_name', 'email')
+#         # fields = ('id', 'first_name', 'last_name', 'email')
+#         # fields = ['text', 'author']
 
 
 class ProjectModelSerializerBase(ModelSerializer):

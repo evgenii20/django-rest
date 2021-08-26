@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,12 +24,13 @@ SECRET_KEY = 'django-insecure-4=fa6bksstpw@5lhytjj!n^bfg4eq4a@oq78%p1q3x^_qe+=b&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # добавляем адреса, с которых будет возможен запрос. Теперь сервер будет отвечать
 # на запросы с http://localhost:3000, на котором располагается тестовый front-end сервер.
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    'http://127.0.0.1:3000',
 ]
 
 # Application definition
@@ -42,16 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # до 10-го урока
-    # 'graphene_django',
-
     'rest_framework',
     'rest_framework.authtoken',
     'userapp',
     'corsheaders',
     'todoapp',
     'django_filters',
-    'drf_yasg'
+    'drf_yasg',
+    'graphene_django'
 
 ]
 
@@ -115,14 +114,17 @@ if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDER_CLASSES'].append('rest_framework.permissions.BrowsableAPIRenderer')
 
 # до 10-го урока
-# GRAPHENE = {
-#     "SCHEMA": "userapp.schema.schema"
-# }
+GRAPHENE = {
+    "SCHEMA": "userapp.schema.schema"
+}
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # После "..\frontend>npm run build" 'DIRS':
+        'DIRS': [
+            BASE_DIR / '../frontend/build',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,9 +144,19 @@ WSGI_APPLICATION = 'api_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'apiuser',
+        'USER': 'admin',
+        'PASSWORD': 'qwerty',
+        'HOST': 'db',
+        'PORT': '5435',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '54325',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
 }
 
 # Password validation
@@ -186,11 +198,21 @@ AUTH_USER_MODEL = 'userapp.APIUser'
 
 STATIC_URL = '/static/'
 
+# После "..\frontend>npm run build"
+STATICFILES_DIRS = (
+    BASE_DIR / '../frontend/build/static',
+)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SWAGGER_SETTINGS = {
-#    'DEFAULT_INFO': 'import.path.to.urls.api_info',
-# }
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'import.path.to.urls.api_info',
+    # 'DEFAULT_GENERATOR_CLASS': 'drf_yasg.generators.OpenAPISchemaGenerator',
+}
+
+# TEMPLATE_DIRS = (
+#     os.path.join(BASE_DIR,  'templates'),
+# )

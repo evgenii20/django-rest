@@ -1,8 +1,8 @@
 import React from 'react'
-import {Redirect} from "react-router-dom";
+// import {Redirect} from "react-router-dom";
 
 
-class LoginForm extends React.Component {
+class   LoginForm extends React.Component {
     // позволяет хранить состояние(логин и пароль) во время выполнения программы
     constructor(props) {
         super(props)
